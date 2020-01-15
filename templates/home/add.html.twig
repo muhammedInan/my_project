@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container">
+    <div class="section">
+
+        <div class="row">
+            <div class="col s12 m12">
+
+               <h1>Ajout de voiture</h1>
+             {% include 'home/form.html.twig' %}
+             <button class="addKeyword btn waves-effect waves-light">Ajouter un mot clé ?</button>
+
+             <button class="btn waves-effect waves-light" type="submit" name="action">Sauvegarder</button>
+
+             {{form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+{{ parent() }}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    
+   // recupere prototype html créer par symfony
+    var $container = $('#car_keywords');
+
+    // recuprere le nombre d'input keyword
+    var index = $container.find(':input').length;
+
+    
+
+    // si 0 input Keyword ajoute 1
+    if(index == 0) {
+        addKeyword($container);
+    }
+
+    // Event click pout ajouter un input keyword
+    $('.addKeyword').click(function(e) {
+        e.preventDefault();
+
+        addKeyword($container);
+
+    });
+
+   // creer l'input keyword pour l'index courant et l'ajoute dans la div id="car_keywords" avec la méthode append
+    function addKeyword($container) {
+
+        var template = $container.attr('data-prototype')
+            .replace(/__name__label__/g, 'Mot clé n°' + (index + 1))
+            .replace(/__name__/g, index)
+        ;
+
+        var $prototype = $(template);
+
+        $container.append($prototype);
+
+        index ++;
+    }
+    });
+</script>
+
+{% endblock %}
